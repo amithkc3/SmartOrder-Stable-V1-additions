@@ -313,14 +313,38 @@ MENU
 			var quantity = document.getElementById(itemId+"Quantity").value;
 			var tokenNum = '{{tokenNum}}';
 			sendAjax(tokenNum,itemId,quantity);
-			closeNav();
+			// closeNav();
 		}
 		function plus(itemId){
 			document.getElementById(itemId+"Quantity").value++;
 			var quantity = document.getElementById(itemId+"Quantity").value;
 			var tokenNum = '{{tokenNum}}';
 			sendAjax(tokenNum,itemId,quantity);
-			closeNav();
+			// closeNav();
+		}
+		function minus2(itemId){
+			if(document.getElementById(itemId+"Quantity").value != 1){
+				document.getElementById(itemId+"Quantity").value--;
+				try{document.getElementById(itemId+"Quantity2").value=document.getElementById(itemId+"Quantity").value;}
+				catch(e){}
+			}
+			else{
+				document.getElementById("sel"+itemId).style.display="none";	
+ 				document.getElementById(itemId+"Quantity").value--;
+
+			}
+			var quantity = document.getElementById(itemId+"Quantity").value;
+			var tokenNum = '{{tokenNum}}';
+			sendAjax(tokenNum,itemId,quantity);
+			// closeNav();
+		}
+		function plus2(itemId){
+			document.getElementById(itemId+"Quantity").value++;
+			document.getElementById(itemId+"Quantity2").value = document.getElementById(itemId+"Quantity").value;
+			var quantity = document.getElementById(itemId+"Quantity").value;
+			var tokenNum = '{{tokenNum}}';
+			sendAjax(tokenNum,itemId,quantity);
+			// closeNav();
 		}
 		function sendAjax(tokenNum,itemId,quantity){
 			console.log(tokenNum,itemId,quantity);
@@ -331,6 +355,7 @@ MENU
         		dataType: 'json',
 		        success: function (data) {
 		        	console.log("sendAjax"+data);
+		        	document.getElementById(itemId+"amount").value=data;
 		        }
      		});
 
@@ -352,6 +377,8 @@ MENU
        			data:{},
         		dataType: 'json',
 		        success: function (data) {
+		        	d=data;
+		        	console.log(data);
 		        	var header = document.getElementById("sideBarHeader").outerHTML;
 		        	var items = document.getElementById("mySidenav");
 		        	items.innerHTML = header;
@@ -365,18 +392,33 @@ MENU
 					}
 		        	for(index in data)
 					{
+						
+						var itemNum = data[index]['itemNum'];
+						var quantityId1 = data[index]['itemNum']+"Quantity";
+
+						var quantityId = data[index]['itemNum']+"Quantity2";
+						var amountId = data[index]['itemNum']+"amount";
+
+						var amount = parseInt(data[index]['price']) * parseInt(document.getElementById(quantityId1).value);
+				
+
 						items.innerHTML += ('<div class="selectedItems" id="sel'+data[index]['itemNum']+'"><div class="selectedItemsDetails"><h1><i>'+ data[index]['itemNum'] +' . '+data[index]['itemName']+'</i></h1>'
-							+'<h2>Quantity :  '+data[index]['quantity']+'</h2>'
-							+'<h2>Price : ₹ '+data[index]['price']+'</h2></div></div>');
-						console.log("blahblah",document.getElementById("sel"+data[index]['itemNum']));
+							 +'<h2>Quantity :  '
+							+'<input class="minus" type="button" name="Add" onclick="minus2('+itemNum+')" value="-">'
+							+'<input class="value" type="number" name="quantity" value='+data[index]['quantity']+' id='+quantityId+' disabled>'
+							+'<input class="plus" type="button" name="Add" onclick="plus2('+itemNum+')" value="+">'
+							+'</h2>'
+							+'<h2>Price : ₹ '+'<input class="value" type="number" name="quantity" value='+amount+' id='+amountId+' disabled></h2></div></div>');
+
+						// console.log("blahblah",document.getElementById("sel"+data[index]['itemNum']));
 						document.getElementById("sel"+data[index]['itemNum']).style.backgroundImage =
 						 'url("/static/Images/'+data[index]['image']+'")';
 
-						console.log(data[index]['itemNum']);
-						console.log(data[index]['itemName']);
-						console.log("quantity"+data[index]['quantity']);
-						console.log("price"+data[index]['price']);
-						console.log(data[index]['image']);	
+						// console.log(data[index]['itemNum']);
+						// console.log(data[index]['itemName']);
+						// console.log("quantity"+data[index]['quantity']);
+						// console.log("price"+data[index]['price']);
+						// console.log(data[index]['image']);	
 					}        	
 		        }
      		});

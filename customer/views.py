@@ -65,7 +65,7 @@ def menuConfirmation(request,tokenNum):											# need to give me orderId
 		'itemNum':c.menu.itemNum,
 		'itemName':c.menu.itemName,
 		'quantity':c.quantity,
-		'price':c.menu.itemUnitPrice * c.quantity,
+		'price':c.menu.itemUnitPrice,
 		'image':c.menu.itemImageName}
 		confirmedList.append(d)
 
