@@ -4,12 +4,13 @@ import datetime
 
 class Menu(models.Model):
 	itemNum = models.AutoField(primary_key=True)
-	itemName = models.CharField(max_length=30,unique=True)
-	itemDesc = models.TextField(default="description")
+	itemName = models.CharField(max_length=20,default="20 characters only .")
+	itemDesc = models.CharField(max_length=96,default="A dish consisting of 2 pieces usually from broiler chickens which have been floured or battered.")
 	itemUnitPrice = models.FloatField(default=0)
 	itemImageName = models.CharField(max_length=50)
 	isEnabled = models.BooleanField(default=True)
 	isVeg = models.BooleanField(default=True)
+	gst = models.FloatField(default=7)
 	
 	def __str__(self):
 		return str(self.itemNum)+" - "+self.itemName+" Price : "+str(self.itemUnitPrice)
@@ -30,8 +31,7 @@ class Token(models.Model):
 class TokenItem(models.Model):
 	tokens = models.ForeignKey(Token,on_delete=models.CASCADE)
 	menu = models.ForeignKey(Menu,on_delete=models.CASCADE)
-	quantity = models.IntegerField(default=0)
-	price = models.FloatField(default=0)
+	quantity = models.FloatField(default=0)
 
 
 class OrderList(models.Model):								#order is a keyword in sql so used OrderList as tablename
@@ -43,8 +43,7 @@ class OrderList(models.Model):								#order is a keyword in sql so used OrderLi
 class OrderedItem(models.Model):
 	orderList = models.ForeignKey(OrderList,on_delete=models.CASCADE)
 	menu = models.ForeignKey(Menu,on_delete=models.CASCADE)
-	quantity = models.IntegerField(default=0)
-	price = models.FloatField(default=0)
+	quantity = models.FloatField(default=0)
 
 class History(models.Model):
 	orderNum = models.IntegerField()
@@ -54,6 +53,11 @@ class History(models.Model):
 	quantity = models.IntegerField(default=0)
 	price = models.FloatField()
 
+class Customer(models.Model):
+	customerName = models.CharField(max_length = 20)
+	address = models.CharField(max_length=100)
+	phoneNum = models.CharField(max_length=10)
+	email = models.CharField(max_length=30)
 
 def add_to_history(sender,**kwargs):
 	x = kwargs['instance']

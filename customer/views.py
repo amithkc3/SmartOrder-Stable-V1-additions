@@ -30,7 +30,7 @@ def menu(request,tokenNum,category):
 			addedMenuItems =[]
 			#print("\n\n\n\n\n\n")
 			for a in addedItems:
-				addedMenuItems.append({'itemNum':a.menu.itemNum,'quantity':a.quantity})
+				addedMenuItems.append({'itemNum':a.menu.itemNum,'quantity':int(a.quantity)})
 			#print(addedMenuItems)
 			context={'isVeg':True,'MenuItems':MenuItems,'tokenNum':tokenNum,'addedMenuItems':addedMenuItems}
 			return render(request,"menu.html",context)
@@ -40,7 +40,7 @@ def menu(request,tokenNum,category):
 			addedMenuItems =[]
 			#print("\n\n\n\n\n\n")
 			for a in addedItems:
-				addedMenuItems.append({'itemNum':a.menu.itemNum,'quantity':a.quantity})
+				addedMenuItems.append({'itemNum':a.menu.itemNum,'quantity':int(a.quantity)})
 			#print(addedMenuItems)
 			context={'isVeg':False,'MenuItems':MenuItems,'tokenNum':tokenNum,'addedMenuItems':addedMenuItems}
 			return render(request,"menu.html",context)

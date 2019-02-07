@@ -29,7 +29,7 @@ MENU
 		grid-template-areas: 'con con con im im';
 		height: 400px;
 		margin: 20px;
-		padding: 20px 30px;
+		padding: 30px 30px;
 		background-color: rgba(255,255,255,0.6);
 		border-radius :15px;
 	}
@@ -49,7 +49,7 @@ MENU
 		background: #66baa8;
 		color : white;
 		width:20%;
-		height: 20%;
+		height: 60px;
 		font-size: 35px;
 		border:none;
 		text-align: center;
@@ -62,7 +62,7 @@ MENU
 		background: #66baa8;
 		color : white;
 		width:20%;
-		height: 20%;
+		height: 60px;
 		font-size: 50px;
 		border:none;
 		text-align: center;
@@ -74,7 +74,7 @@ MENU
 		background: #66baa8;
 		color : white;
 		width:20%;
-		height: 20%;
+		height: 60px;
 		font-size: 50px;
 		border:none;
 		text-align: center;
@@ -86,7 +86,7 @@ MENU
 	    height: 100%;
 	    width: 0;
 	    position: fixed;
-	    z-index: 1;
+	    z-index: 2;
 	    top: 0;
 	    right: 0;
 	    background-color: rgba(100,100,100,0.85);
@@ -132,6 +132,13 @@ MENU
 	    background-color: rgba(255,255,255,0.6);
 	    border-radius: 15px;
 	    margin: 20px;
+	    position: fixed;
+  		top: 0;
+  		width: 100%;
+  		background-color:rgba(255,255,255,0.9); 
+  		border-radius: 0px 0px 20px 20px ;
+	    margin: 0px;
+	    z-index: 2;
 	}
 	.navbar a {
 	    float: left;
@@ -233,10 +240,62 @@ MENU
 	input:checked + .slider:before {
 	  transform: translateX(40px);
 	}
+/*tax slider css*/
+	.switchTax {
+	  position: relative;
+	  display: inline-block;
+	  width: 75px;
+	  height: 34px;
+	}
+
+	.switchTax input { 
+	  opacity: 0;
+	  width: 0;
+	  height: 0;
+	}
+
+	.sliderTax {
+	  position: absolute;
+	  cursor: pointer;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background-color: rgba(150,150,150,0.2);
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	  border-radius: 34px;
+	}
+
+	.sliderTax:before {
+	  position: absolute;
+	  content: "";
+	  height: 26px;
+	  width: 26px;
+	  left: 4px;
+	  bottom: 4px;
+	  background-color: white;
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	 border-radius: 50%;
+
+	}
+
+	input:checked + .sliderTax {
+	  background-color: #66cc66;
+	}
+
+	input:focus + .sliderTax {
+	  box-shadow: 0 0 1px #66cc66;
+	}
+
+	input:checked + .slideTax:before {
+	  transform: translateX(40px);
+	}
 
 	/*css for search bar*/
 	#mySearch {
-	  width: 40%;
+	  width:35%;
 	  font-size: 16px;
 	  padding: 20px;
 	  border: 1px solid #ddd;
@@ -244,9 +303,72 @@ MENU
 	  background: rgba(255,255,255,0.75);
 	  border-radius: 15px;
 	}
+	.thebody{
+		margin-top : 140px;
+	}
+	.amount{
+		font-size: 28px;
+		color: #228B22;
+		display: inline-block;
+	}
+	.amountInputField{
+		text-decoration: none;
+		background: rgba(0,0,0,0);
+		display: inline-block;
+		color : #228B22 ;
+		width:150px;
+		font-size: 35px;
+		border:none;
+		text-align: center;
+	}
+	.amountInputFieldWithGst{
+		text-decoration: none;
+		background: rgba(0,0,0,0);
+		display: inline-block;
+		color : #228B22 ;
+		width:150px;
+		font-size: 35px;
+		border:none;
+		text-align: center;
+	}
+	.UnitPriceInputField{
+		text-decoration: none;
+		background: rgba(0,0,0,0);
+		display: inline-block;
+		color : black;
+		width:150px;
+		font-size: 25px;
+		border:none;
+		text-align: center;
+	}
+	.gstPercentage input{
+		text-decoration: none;
+		background: rgba(0,0,0,0);
+		display: inline;
+		color : #228B22 ;
+		width:30px;
+		font-size: 15px;
+		border:none;
+		text-align: center;
+	}
 </style>
 {%endblock css%}
 {%block body%}
+<div class="navbar" id="navbar">
+	
+  	<div class="subnav">
+  		<p><small style="font-size: 25px;">VEG only</small></p>
+    	<label class="switch">
+  		<input type="checkbox" id="but">
+  		<span class="slider round"></span>
+		</label>
+	</div>
+	<input type="text" id="mySearch" onkeyup="filterItems()" placeholder="Search Items.." title="Type in a name">
+
+	<div class="placeorder">
+			<input class ="subnavbtn" type="button" value="PLACE ORDER" onclick="toggle()">
+	</div>
+</div>
 <div id="mySidenav" class="sidenav">
   	<div id="sideBarHeader">
   		<form  method="POST" action="{% url 'placeOrder' %}">
@@ -258,45 +380,51 @@ MENU
   	</div>
 </div>
 <!-- sidebar ends navbar begins -->
-<div class="navbar" id="navbar">
-	
-  	<div class="subnav">
-  		<p><small style="font-size: 25px;">VEG only</small></p>
-    	<label class="switch">
-  		<input type="checkbox" id="but">
-  		<span class="slider round"></span>
-	</label>
-	</div>
-	<input type="text" id="mySearch" onkeyup="filterItems()" placeholder="Search Items.." title="Type in a name">
 
-	<div class="placeorder">
-			<input class ="subnavbtn" type="button" value="PLACE ORDER" onclick="toggle()">
-	</div>
-</div>
 <!-- navbar ends -->
-<div class="thebody">
+<div class="thebody" >
 	{%for item in MenuItems %}
-	<div class="outerContainer" onclick="closeNav()" id="{{item.itemName}}"> 
+	<div class="outerContainer" onclick="closeNav()" id="{{item.itemNum}}"> 
 		<!-- if user clicks anywhere other than popup close popup -->
-		<div class="content">
+		<div class="content" style="position:relative;">
 			<item>
 			<itemNum id="{{item.itemNum}}">{{item.itemNum}}</itemNum>.<itemName id="{{item.itemNum}}Name">{{item.itemName}}</itemName>
 			</item>
+			<h1>₹<input class="UnitPriceInputField" id="{{item.itemNum}}UnitPrice" value="{{item.itemUnitPrice}}"></h1>
+
 			<desc id="{{item.itemNum}}Desc">{{item.itemDesc}}</desc>
-			<h1 id="{{item.itemNum}}UnitPrice">₹{{item.itemUnitPrice}}</h1>
+			<br>
+			<!-- <input id="{{item.itemNum}}gstAmount" value="0" style="display:'';" disabled="true"> -->
+			
+			<div style="display: 'none';" class="AmountExtDiv" id="{{item.itemNum}}AmountExtDiv">
+				<h1 class="amount" >Amount: ₹
+					<input class="amountInputField" id="{{item.itemNum}}Amount" value="0" disabled="true" style="display: '';">
+					<input class="amountInputFieldWithGst" id="{{item.itemNum}}gstAmount" value="0" disabled="true" style="display: none;">
+					<small class="gstPercentage" style="font-size: 20px;">+<input id="{{item.itemNum}}gst" value="{{item.gst}}" style="display:'';" disabled="true">% gst</small>
+					<div style="display: inline-block;right:0"><small style="font-size: 14px;">*Show amount Including Taxes</small>
+			    	<label class="switch">
+			  		<input type="checkbox" class="taxes">
+			  		<span class="slider round"></span>
+					</label>
+					</div>
+				</h1>
+			</div>
+
+			<div id="{{item.itemNum}}inputs" style=" position: absolute;bottom: 0;">
 				<input class="minus" type="button" name="Add" onclick="minus('{{item.itemNum}}')" value="-">
 				<input class="value" type="number" name="quantity" value=0 id="{{item.itemNum}}Quantity" disabled>
 				<input class="plus" type="button" name="Add" onclick="plus('{{item.itemNum}}')" value="+">
-			
+			</div>
 		</div>
 		{%load static%}
 		{% with 'Images/'|add:item.itemImageName as itemImage_static %}
 		<img src="{% static itemImage_static %}" class="image" alt="{{item.itemImageName}}" align="left">
 		{%endwith%}
 	</div>
-</div>
+
 
 	{%endfor%}
+	</div>
 	<script type="text/javascript">
 	{%for added in addedMenuItems%}
 		document.getElementById("{{added.itemNum}}Quantity").value = '{{added.quantity}}';
@@ -305,21 +433,71 @@ MENU
 	{%load static%}
 	<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript">
+		window.onload = function()
+		{
+			$(".outerContainer").each(function(){
+				var Uprice = document.getElementById(this.id+"UnitPrice").value;
+				var Quantity = document.getElementById(this.id+"Quantity").value;	
+				var amount = Uprice*Quantity ;
+				document.getElementById(this.id+"Amount").value = amount;
+				console.log("amount" + amount);
+				if(amount > 0){
+					document.getElementById(this.id+"AmountExtDiv").style.display = "";
+					console.log("yay");
+				}
+				else{
+					document.getElementById(this.id+"AmountExtDiv").style.display = "none";	
+				}
+				document.getElementById(this.id+"gstAmount").value = (((document.getElementById(this.id+"gst").value/100)+1) * amount).toFixed(2);
+
+			});
+		}
 		var i=0;
 		function minus(itemId){
 			if(document.getElementById(itemId+"Quantity").value !=0){
 				document.getElementById(itemId+"Quantity").value--;
 			}
-			var quantity = document.getElementById(itemId+"Quantity").value;
+			else{
+				document.getElementById(itemId+"AmountExtDiv").style.display = "none";
+			}
+
+			var Uprice = document.getElementById(itemId+"UnitPrice").value;
+			var Quantity = document.getElementById(itemId+"Quantity").value;
+			var amount = Uprice*Quantity ;
+			document.getElementById(itemId+"Amount").value = amount;
+				console.log("amount" + amount);
+				if(amount > 0){
+					document.getElementById(itemId+"AmountExtDiv").style.display = "";
+					console.log("yay");
+				}
+				else{
+					document.getElementById(itemId+"AmountExtDiv").style.display = "none";	
+				}
+			document.getElementById(itemId+"gstAmount").value = (((document.getElementById(itemId+"gst").value/100)+1) * amount).toFixed(2);
 			var tokenNum = '{{tokenNum}}';
-			sendAjax(tokenNum,itemId,quantity);
+			sendAjax(tokenNum,itemId,Quantity);
 			closeNav();
 		}
 		function plus(itemId){
+			document.getElementById(itemId+"AmountExtDiv").style.display = "";
 			document.getElementById(itemId+"Quantity").value++;
-			var quantity = document.getElementById(itemId+"Quantity").value;
+
+			var Uprice = document.getElementById(itemId+"UnitPrice").value;
+			var Quantity = document.getElementById(itemId+"Quantity").value;
+			var amount = Uprice*Quantity ;
+			document.getElementById(itemId+"Amount").value = amount;
+				console.log("amount" + amount);
+				if(amount > 0){
+					document.getElementById(itemId+"AmountExtDiv").style.display = "";
+					console.log("yay");
+				}
+				else{
+					document.getElementById(itemId+"AmountExtDiv").style.display = "none";	
+				}
+
+			document.getElementById(itemId+"gstAmount").value = (((document.getElementById(itemId+"gst").value/100)+1) * amount).toFixed(2);
 			var tokenNum = '{{tokenNum}}';
-			sendAjax(tokenNum,itemId,quantity);
+			sendAjax(tokenNum,itemId,Quantity);
 			closeNav();
 		}
 		function sendAjax(tokenNum,itemId,quantity){
@@ -365,18 +543,18 @@ MENU
 					}
 		        	for(index in data)
 					{
-						items.innerHTML += ('<div class="selectedItems" id="sel'+data[index]['itemNum']+'"><div class="selectedItemsDetails"><h1><i>'+ data[index]['itemNum'] +' . '+data[index]['itemName']+'</i></h1>'
+						items.innerHTML += ('<div class="selectedItems" id="sel'+data[index]['itemNum']+'" onclick="showOnTop('+"'"+data[index]['itemNum']+"'"+')"><div class="selectedItemsDetails"><h1><i>'+ data[index]['itemNum'] +' . '+data[index]['itemName']+'</i></h1>'
 							+'<h2>Quantity :  '+data[index]['quantity']+'</h2>'
 							+'<h2>Price : ₹ '+data[index]['price']+'</h2></div></div>');
 						console.log("blahblah",document.getElementById("sel"+data[index]['itemNum']));
 						document.getElementById("sel"+data[index]['itemNum']).style.backgroundImage =
 						 'url("/static/Images/'+data[index]['image']+'")';
 
-						console.log(data[index]['itemNum']);
-						console.log(data[index]['itemName']);
-						console.log("quantity"+data[index]['quantity']);
-						console.log("price"+data[index]['price']);
-						console.log(data[index]['image']);	
+						// console.log(data[index]['itemNum']);
+						// console.log(data[index]['itemName']);
+						// console.log("quantity"+data[index]['quantity']);
+						// console.log("price"+data[index]['price']);
+						// console.log(data[index]['image']);	
 					}        	
 		        }
      		});
@@ -389,8 +567,19 @@ MENU
 		function closeNav() {
 		    document.getElementById("mySidenav").style.width = "0";
 		}
+		function showOnTop(id){
+			
+			var content = document.getElementById(id);
+			content.scrollIntoView(true);
+			window.scrollBy(0,-150);
+			// parent.insertBefore(content, parent.firstChild);
+
+		}
 	</script>
 	<script>
+
+
+	//sliders
 	if( '{{isVeg}}' == 'True')
 	{
 		document.getElementById("but").checked = true;
@@ -409,7 +598,44 @@ MENU
 		else
 		 	window.location = "{% url 'menu' tokenNum 'ALL'  %}";
 	});
+	var tax=false;
+	$(".taxes").change(function(){
+		
+		tax = !tax;
+		if(tax==true)
+		{
+			$(".taxes").each(function(){
+				this.checked =true;
+			});
+			$(".amountInputFieldWithGst").each(function(){
+				this.style.display = "";
+			});
+			$(".amountInputField").each(function(){
+				this.style.display = "none";
+			});
 
+			$(".gstPercentage").each(function(){
+				this.style.display = "none";
+			});
+		}
+		else{
+			$(".taxes").each(function(){
+				this.checked =false;
+			});
+			$(".amountInputFieldWithGst").each(function(){
+				this.style.display = "none";
+			});
+			$(".amountInputField").each(function(){
+				this.style.display = "";
+			});
+			
+			$(".gstPercentage").each(function(){
+				this.style.display = "";
+			});
+		}
+	});
+
+	//sliders
 	window.onscroll = function() {myFunction()};
 
 	var navbar = document.getElementById("navbar");
