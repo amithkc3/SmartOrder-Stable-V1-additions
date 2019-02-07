@@ -10,3 +10,4 @@ admin.site.register(OrderList)
 admin.site.register(OrderedItem)
 
 admin.site.register(History)
+admin.site.register(Customer)
